@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GENM Software — Mobile App Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #07080d;
+      --bg2:       #0d0f17;
+      --surface:   #111520;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #00e5c3;
+      --accent2:   #7c6dfa;
+      --text:      #e8eaf0;
+      --muted:     #7a7f96;
+      --heading:   #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      background: rgba(7,8,13,0.78);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--heading);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover { color: var(--heading); background: var(--surface); }
+
+    .btn-nav {
+      background: var(--accent) !important;
+      color: #07080d !important;
+      font-weight: 600 !important;
+    }
+    .btn-nav:hover { opacity: 0.88; background: var(--accent) !important; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ══════════════════════════════
+       LANDING PAGE
+    ══════════════════════════════ */
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,195,0.12) 0%, transparent 70%);
+      top: -160px; right: -180px;
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,109,250,0.1) 0%, transparent 70%);
+      bottom: -80px; left: -100px;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      max-width: 1160px; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(0,229,195,0.3);
+      background: rgba(0,229,195,0.07);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--heading);
+      margin-bottom: 24px;
+    }
+    .hero-title .grad {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 440px;
+      margin-bottom: 40px;
+      line-height: 1.75;
+    }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #00bfa8);
+      color: #07080d;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 14px 30px;
+      border-radius: 12px;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(0,229,195,0.25);
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 44px rgba(0,229,195,0.38);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 14px 30px;
+      border-radius: 12px;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { border-color: var(--accent); background: rgba(0,229,195,0.05); }
+
+    /* Phone mockup */
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+
+    .phone-wrap {
+      position: relative;
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-18px); }
+    }
+
+    .phone {
+      width: 240px;
+      background: var(--surface);
+      border-radius: 38px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      padding: 16px;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .phone::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 72px; height: 26px;
+      background: #07080d;
+      border-radius: 0 0 16px 16px;
+      z-index: 2;
+    }
+
+    .phone-screen {
+      background: linear-gradient(160deg, #141829 0%, #0d1020 100%);
+      border-radius: 28px;
+      height: 400px;
+      padding: 40px 16px 16px;
+      display: flex; flex-direction: column; gap: 12px;
+      overflow: hidden;
+    }
+
+    .phone-bar {
+      height: 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.07);
+      animation: shimmer 2.5s ease-in-out infinite;
+    }
+    .phone-bar.accent { background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 60%; }
+    .phone-bar.s1 { width: 90%; animation-delay: 0.2s; }
+    .phone-bar.s2 { width: 70%; animation-delay: 0.4s; }
+    .phone-bar.s3 { width: 80%; animation-delay: 0.6s; }
+    .phone-bar.s4 { width: 50%; animation-delay: 0.8s; }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.6; }
+      50%       { opacity: 1; }
+    }
+
+    .phone-card {
+      background: rgba(0,229,195,0.08);
+      border: 1px solid rgba(0,229,195,0.2);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex; gap: 10px; align-items: center;
+      margin-top: 8px;
+    }
+    .phone-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .phone-mini-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .phone-mini-bar {
+      height: 7px; border-radius: 4px;
+      background: rgba(255,255,255,0.12);
+    }
+    .phone-mini-bar:first-child { width: 80%; }
+    .phone-mini-bar:last-child { width: 55%; }
+
+    .phone-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0,229,195,0.12);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .phone-ring.r1 { width: 340px; height: 340px; }
+    .phone-ring.r2 { width: 460px; height: 460px; border-color: rgba(124,109,250,0.08); }
+    .phone-ring.r3 { width: 580px; height: 580px; border-color: rgba(0,229,195,0.05); }
+
+    /* Stats */
+    .stats {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px 80px;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .stat-item {
+      background: var(--bg);
+      padding: 36px 32px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--heading);
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: var(--muted); font-weight: 400; }
+
+    /* Services */
+    .section {
+      max-width: 1160px; margin: 0 auto;
+      padding: 80px 48px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--heading);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 500px;
+      font-weight: 300;
+    }
+
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 56px;
+      background: var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--bg2);
+      padding: 40px 32px;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card:hover { background: var(--surface); }
+    .service-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: rgba(0,229,195,0.1);
+      border: 1px solid rgba(0,229,195,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+    }
+    .service-icon.purple {
+      background: rgba(124,109,250,0.1);
+      border-color: rgba(124,109,250,0.25);
+    }
+
+    .service-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--heading);
+      margin-bottom: 10px;
+    }
+    .service-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Tech stack */
+    .tech-strip {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+    .tech-strip-label {
+      text-align: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    .tech-logos {
+      display: flex; flex-wrap: wrap;
+      gap: 12px; justify-content: center;
+    }
+    .tech-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tech-pill:hover { color: var(--heading); border-color: rgba(0,229,195,0.35); }
+
+    /* Process */
+    .process-list {
+      margin-top: 56px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .process-item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 24px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .process-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--surface);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .process-content {}
+    .process-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--heading);
+      margin-bottom: 8px;
+    }
+    .process-desc { font-size: 0.9rem; color: var(--muted); }
+
+    /* Contact */
+    .contact-wrap {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+    .contact-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 80px 48px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .contact-email-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 2px solid rgba(0,229,195,0.3);
+      padding-bottom: 4px;
+      transition: border-color 0.2s;
+    }
+    .contact-email-link:hover { border-color: var(--accent); }
+    .contact-detail { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 100%;
+    }
+    .footer-copy { font-size: 0.82rem; color: var(--muted); }
+    .footer-policy {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+      background: none; border: none;
+    }
+    .footer-policy:hover { color: var(--accent); }
+
+    /* ══════════════════════════════
+       PRIVACY POLICY PAGE
+    ══════════════════════════════ */
+    .policy-page { padding-top: 96px; }
+
+    .policy-hero {
+      background: linear-gradient(180deg, rgba(0,229,195,0.05) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 48px 50px;
+      text-align: center;
+    }
+
+    .policy-hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .policy-hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--heading);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .policy-hero-sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .policy-layout {
+      max-width: 860px; margin: 0 auto;
+      padding: 56px 48px 96px;
+    }
+
+    .policy-toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 52px;
+    }
+    .policy-toc h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .policy-toc ol {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+      counter-reset: toc-counter;
+    }
+    .policy-toc ol li { counter-increment: toc-counter; }
+    .policy-toc ol li a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex; align-items: center; gap: 10px;
+      transition: color 0.2s;
+    }
+    .policy-toc ol li a::before {
+      content: counter(toc-counter, decimal-leading-zero);
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      min-width: 26px;
+    }
+    .policy-toc ol li a:hover { color: var(--accent); }
+
+    .policy-section {
+      margin-bottom: 48px;
+      scroll-margin-top: 96px;
+    }
+
+    .policy-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .policy-section h2 .sec-num {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: rgba(0,229,195,0.1);
+      border: 1px solid rgba(0,229,195,0.2);
+      border-radius: 6px;
+      padding: 3px 8px;
+    }
+
+    .policy-section p {
+      color: var(--text);
+      font-size: 0.94rem;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .policy-section ul, .policy-section ol {
+      padding-left: 0; list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .policy-section ul li, .policy-section ol li {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.75;
+      padding-left: 20px;
+      position: relative;
+    }
+    .policy-section ul li::before {
+      content: '→';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 0.82rem;
+      top: 2px;
+    }
+    .policy-section ol {
+      counter-reset: ol-counter;
+    }
+    .policy-section ol li { counter-increment: ol-counter; }
+    .policy-section ol li::before {
+      content: counter(ol-counter) '.';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .policy-section strong { color: var(--heading); font-weight: 600; }
+
+    .policy-contact-box {
+      background: linear-gradient(135deg, rgba(0,229,195,0.08), rgba(124,109,250,0.08));
+      border: 1px solid rgba(0,229,195,0.2);
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 8px;
+    }
+    .policy-contact-box p { margin: 0; }
+    .policy-contact-box a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .policy-contact-box a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .hero { padding: 110px 24px 60px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { order: -1; }
+      .stats { padding: 0 24px 60px; grid-template-columns: 1fr; }
+      .section { padding: 60px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 10px; text-align: center; }
+      .tech-strip { padding: 0 24px 60px; }
+      .policy-layout { padding: 40px 24px 80px; }
+      .policy-hero { padding: 50px 24px 40px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-actions { flex-direction: column; }
+      .process-item { grid-template-columns: 48px 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a class="nav-logo" href="#" onclick="showPage('landing')">
+      <span>GENM</span> Software
+    </a>
+    <div class="nav-links">
+      <a href="#services" onclick="showPage('landing')">Services</a>
+      <a href="#process" onclick="showPage('landing')">Process</a>
+      <a href="#contact" onclick="showPage('landing')">Contact</a>
+      <a href="#" class="btn-nav" onclick="showPage('policy'); return false;">Privacy Policy</a>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════
+       LANDING PAGE
+  ════════════════════════════ -->
+  <div id="page-landing" class="page active">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-glow2"></div>
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-tag">Mobile App Development Studio</div>
+          <h1 class="hero-title">
+            We Build Apps<br />
+            <span class="grad">People Love</span><br />
+            to Use
+          </h1>
+          <p class="hero-sub">
+            GENM Software is a dedicated mobile application development company crafting high-performance iOS and Android experiences — from concept to launch.
+          </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn-primary">Start a Project →</a>
+            <a href="#services" class="btn-ghost">Our Services</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="phone-ring r3"></div>
+          <div class="phone-ring r2"></div>
+          <div class="phone-ring r1"></div>
+          <div class="phone-wrap">
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="phone-bar accent"></div>
+                <div class="phone-bar s1"></div>
+                <div class="phone-bar s2"></div>
+                <div class="phone-card">
+                  <div class="phone-icon"></div>
+                  <div class="phone-mini-bars">
+                    <div class="phone-mini-bar"></div>
+                    <div class="phone-mini-bar"></div>
+                  </div>
+                </div>
+                <div class="phone-bar s3"></div>
+                <div class="phone-bar s4"></div>
+                <div class="phone-bar s1" style="animation-delay:1s;"></div>
+                <div class="phone-card" style="background:rgba(124,109,250,0.08);border-color:rgba(124,109,250,0.2)">
+                  <div class="phone-icon purple" style="background:linear-gradient(135deg,var(--accent2),#a79cf8)"></div>
+                  <div class="phone-mini-bars">
+                    <div class="phone-mini-bar"></div>
+                    <div class="phone-mini-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">50<span>+</span></div>
+        <div class="stat-label">Apps Delivered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8<span>+</span></div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">99<span>%</span></div>
+        <div class="stat-label">Client Satisfaction</div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <section class="section" id="services">
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">End-to-End Mobile<br />Development</h2>
+      <p class="section-sub">From the first wireframe to App Store approval — we handle every layer of the stack.</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">📱</div>
+          <div class="service-name">iOS Development</div>
+          <div class="service-desc">Native Swift & SwiftUI applications built for performance, reliability, and a premium Apple experience.</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon purple">🤖</div>
+          <div class="service-name">Android Development</div>
+          <div class="service-desc">Kotlin-first Android apps optimised for the full ecosystem of devices and screen sizes.</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⚡</div>
+          <div class="service-name">Cross-Platform</div>
+          <div class="service-desc">React Native & Flutter solutions that cut time-to-market without sacrificing native feel.</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon purple">🎨</div>
+          <div class="service-name">UI/UX Design</div>
+          <div class="service-desc">Research-driven design that turns complex flows into intuitive, delightful interactions.</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔗</div>
+          <div class="service-name">API & Backend</div>
+          <div class="service-desc">Scalable REST and GraphQL backends, cloud infrastructure, and seamless third-party integrations.</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon purple">🚀</div>
+          <div class="service-name">Maintenance & Growth</div>
+          <div class="service-desc">Post-launch monitoring, iterative updates, and analytics to keep your app growing.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" style="max-width:1160px;margin:0 auto 80px;padding:0 48px;"></div>
+
+    <!-- Tech Stack -->
+    <div class="tech-strip">
+      <div class="tech-strip-label">Technologies we master</div>
+      <div class="tech-logos">
+        <div class="tech-pill">Swift</div>
+        <div class="tech-pill">SwiftUI</div>
+        <div class="tech-pill">Kotlin</div>
+        <div class="tech-pill">Jetpack Compose</div>
+        <div class="tech-pill">React Native</div>
+        <div class="tech-pill">Flutter</div>
+        <div class="tech-pill">Node.js</div>
+        <div class="tech-pill">Firebase</div>
+        <div class="tech-pill">AWS</div>
+        <div class="tech-pill">GraphQL</div>
+        <div class="tech-pill">Figma</div>
+        <div class="tech-pill">CI/CD</div>
+      </div>
+    </div>
+
+    <!-- Process -->
+    <section class="section" id="process">
+      <div class="section-label">How We Work</div>
+      <h2 class="section-title">Our Development<br />Process</h2>
+      <p class="section-sub">A clear, transparent process so you always know exactly where your project stands.</p>
+
+      <div class="process-list">
+        <div class="process-item">
+          <div class="process-num">01</div>
+          <div class="process-content">
+            <div class="process-title">Discovery & Strategy</div>
+            <div class="process-desc">We learn your goals, users, and market. We define the product scope and choose the right tech stack for your needs.</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">02</div>
+          <div class="process-content">
+            <div class="process-title">Design & Prototyping</div>
+            <div class="process-desc">Wire-frames to polished high-fidelity prototypes. You validate the experience before a single line of code is written.</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">03</div>
+          <div class="process-content">
+            <div class="process-title">Agile Development</div>
+            <div class="process-desc">Iterative two-week sprints with regular demos. You see real progress, provide real feedback, and stay in control.</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">04</div>
+          <div class="process-content">
+            <div class="process-title">QA & Launch</div>
+            <div class="process-desc">Rigorous testing across devices. We handle App Store and Google Play submissions, then monitor post-launch performance.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <div class="contact-wrap" id="contact">
+      <div class="contact-inner">
+        <div>
+          <div class="section-label">Get in Touch</div>
+          <h2 class="section-title" style="margin-bottom:20px;">Let's Build<br />Something Great</h2>
+          <p style="color:var(--muted);font-size:0.95rem;line-height:1.8;max-width:380px;">
+            Have a project in mind? Reach out and let's talk about turning your idea into a polished mobile product.
+          </p>
+        </div>
+        <div>
+          <div class="contact-detail" style="margin-bottom:8px;color:var(--muted);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">Email us</div>
+          <a class="contact-email-link" href="mailto:info@genmsoftware.com">
+            info@genmsoftware.com
+          </a>
+          <div class="contact-detail" style="margin-top:20px;">
+            We typically respond within one business day.
+          </div>
+          <div style="margin-top:28px;">
+            <a class="btn-primary" href="mailto:info@genmsoftware.com">
+              Send a Message →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-copy">© 2025 GENM Software. All rights reserved. — genmsoftware.com</div>
+      <button class="footer-policy" onclick="showPage('policy')">Privacy Policy</button>
+    </footer>
+
+  </div><!-- /landing -->
+
+
+  <!-- ════════════════════════════
+       PRIVACY POLICY PAGE
+  ════════════════════════════ -->
+  <div id="page-policy" class="page">
+    <div class="policy-page">
+
+      <div class="policy-hero">
+        <div class="policy-hero-badge">Legal Document</div>
+        <h1>Privacy Policy</h1>
+        <p class="policy-hero-sub">Effective date: June 1, 2025 &nbsp;·&nbsp; genmsoftware.com</p>
+      </div>
+
+      <div class="policy-layout">
+
+        <!-- Intro -->
+        <div class="policy-section">
+          <p>
+            This Privacy Policy (the <strong>"Policy"</strong>) describes how <strong>GENM Software</strong> (<strong>"GENM"</strong>, <strong>"we"</strong>, <strong>"us"</strong>, or <strong>"our"</strong>), operating at <strong>genmsoftware.com</strong>, collects, uses, and protects personal data in connection with the mobile applications, websites, and digital services we develop and operate (collectively the <strong>"Platform"</strong>).
+          </p>
+          <p>
+            Protecting your privacy is fundamental to how we operate. Please read this Policy carefully to understand how your personal information is handled.
+          </p>
+        </div>
+
+        <!-- TOC -->
+        <div class="policy-toc">
+          <h3>Table of Contents</h3>
+          <ol>
+            <li><a href="#pol-1">Whose data do we process?</a></li>
+            <li><a href="#pol-2">What data do we collect?</a></li>
+            <li><a href="#pol-3">Purposes of data processing</a></li>
+            <li><a href="#pol-4">Cookies and similar technologies</a></li>
+            <li><a href="#pol-5">Sharing data with third parties</a></li>
+            <li><a href="#pol-6">Data retention</a></li>
+            <li><a href="#pol-7">Data security</a></li>
+            <li><a href="#pol-8">Minors' data</a></li>
+            <li><a href="#pol-9">Your rights</a></li>
+            <li><a href="#pol-10">International data transfers</a></li>
+            <li><a href="#pol-11">Policy updates</a></li>
+            <li><a href="#pol-12">How to contact us</a></li>
+          </ol>
+        </div>
+
+        <!-- 1 -->
+        <div class="policy-section" id="pol-1">
+          <h2><span class="sec-num">01</span> Whose data do we process?</h2>
+          <ul>
+            <li><strong>App users:</strong> Individuals who download or use any mobile application developed or operated by GENM Software.</li>
+            <li><strong>Website visitors:</strong> People who browse genmsoftware.com or any related digital property.</li>
+            <li><strong>Business clients & partners:</strong> Companies or individuals who engage GENM Software for development services, whose contact and project information may be processed under contractual agreements.</li>
+          </ul>
+        </div>
+
+        <!-- 2 -->
+        <div class="policy-section" id="pol-2">
+          <h2><span class="sec-num">02</span> What data do we collect?</h2>
+          <ul>
+            <li><strong>Identity & contact information:</strong> Name, email address, phone number, and any details you voluntarily provide when contacting us or registering in an app.</li>
+            <li><strong>Technical & device data:</strong> Device model, operating system version, unique device identifiers, IP address, and browser type.</li>
+            <li><strong>Usage data:</strong> In-app actions, session duration, feature interactions, crash reports, and performance diagnostics.</li>
+            <li><strong>Location data:</strong> Approximate location inferred from IP address; precise location only when explicitly granted by the user within a specific application.</li>
+            <li><strong>Communications:</strong> Records of any correspondence between you and our support or sales team (email, contact forms, etc.).</li>
+          </ul>
+        </div>
+
+        <!-- 3 -->
+        <div class="policy-section" id="pol-3">
+          <h2><span class="sec-num">03</span> Purposes of data processing</h2>
+          <ul>
+            <li><strong>Service delivery:</strong> Providing, maintaining, and improving the apps and digital services we build and operate.</li>
+            <li><strong>User support:</strong> Responding to inquiries, resolving technical issues, and providing customer care.</li>
+            <li><strong>Security & fraud prevention:</strong> Detecting, investigating, and preventing unauthorised access and abusive behaviour.</li>
+            <li><strong>Analytics & product improvement:</strong> Understanding how users interact with our apps to inform design and engineering decisions.</li>
+            <li><strong>Marketing & communications:</strong> Sending updates, newsletters, or promotional material — always with the ability to opt out.</li>
+            <li><strong>Legal compliance:</strong> Fulfilling obligations under applicable laws and regulations.</li>
+          </ul>
+        </div>
+
+        <!-- 4 -->
+        <div class="policy-section" id="pol-4">
+          <h2><span class="sec-num">04</span> Cookies and similar technologies</h2>
+          <p>Our website and certain apps use cookies, local storage, and similar tracking technologies to:</p>
+          <ul>
+            <li>Maintain session state and user preferences.</li>
+            <li>Collect anonymised analytics about Platform usage.</li>
+            <li>Improve security and detect fraudulent access.</li>
+          </ul>
+          <p>You can manage or disable cookies through your browser settings or device preferences. Disabling certain cookies may affect Platform functionality.</p>
+        </div>
+
+        <!-- 5 -->
+        <div class="policy-section" id="pol-5">
+          <h2><span class="sec-num">05</span> Sharing data with third parties</h2>
+          <ul>
+            <li><strong>Service providers:</strong> Trusted vendors (cloud hosting, analytics, push notifications) who process data on our behalf under strict data-processing agreements.</li>
+            <li><strong>Legal obligations:</strong> We may disclose data to courts, regulators, or law enforcement when required by applicable law.</li>
+            <li><strong>Business transfers:</strong> In the event of a merger, acquisition, or sale of assets, user data may be transferred to the successor entity and will continue to be governed by this Policy.</li>
+          </ul>
+          <p>We do not sell personal data to third parties.</p>
+        </div>
+
+        <!-- 6 -->
+        <div class="policy-section" id="pol-6">
+          <h2><span class="sec-num">06</span> Data retention</h2>
+          <p>We retain personal data only for as long as necessary to fulfil the purposes described in this Policy, or as required by applicable law. Account and transactional data is generally retained for a minimum period mandated by financial and legal regulations. When data is no longer needed, it is securely deleted or anonymised.</p>
+        </div>
+
+        <!-- 7 -->
+        <div class="policy-section" id="pol-7">
+          <h2><span class="sec-num">07</span> Data security</h2>
+          <ul>
+            <li><strong>Technical safeguards:</strong> All data in transit is protected with TLS/HTTPS encryption. Data at rest is encrypted using industry-standard algorithms.</li>
+            <li><strong>Access controls:</strong> Access to personal data is restricted to authorised personnel on a need-to-know basis.</li>
+            <li><strong>Monitoring & audits:</strong> We conduct regular security reviews, penetration testing, and internal audits to identify and address vulnerabilities promptly.</li>
+          </ul>
+        </div>
+
+        <!-- 8 -->
+        <div class="policy-section" id="pol-8">
+          <h2><span class="sec-num">08</span> Minors' data</h2>
+          <p>Unless a specific GENM application is explicitly designed and authorised for users under 18 years of age, our Platform is intended for adults only. We do not knowingly collect personal data from minors. If we become aware that data of a minor has been inadvertently collected, we will delete it promptly. Parents or guardians who believe their child's data has been collected may contact us at <a href="mailto:info@genmsoftware.com" style="color:var(--accent);">info@genmsoftware.com</a>.</p>
+        </div>
+
+        <!-- 9 -->
+        <div class="policy-section" id="pol-9">
+          <h2><span class="sec-num">09</span> Your rights</h2>
+          <p>Subject to applicable law, you may exercise the following rights with respect to your personal data:</p>
+          <ul>
+            <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
+            <li><strong>Rectification:</strong> Ask us to correct inaccurate or incomplete data.</li>
+            <li><strong>Erasure:</strong> Request deletion of your data where it is no longer necessary for the purposes it was collected.</li>
+            <li><strong>Restriction:</strong> Ask us to temporarily suspend the processing of your data.</li>
+            <li><strong>Portability:</strong> Receive your data in a structured, machine-readable format.</li>
+            <li><strong>Objection:</strong> Object to processing based on legitimate interests, including direct marketing.</li>
+            <li><strong>Withdraw consent:</strong> Where processing is based on consent, withdraw it at any time without affecting prior processing.</li>
+          </ul>
+          <p>To exercise any of these rights, contact us at <a href="mailto:info@genmsoftware.com" style="color:var(--accent);">info@genmsoftware.com</a>. We may ask for proof of identity before processing your request.</p>
+        </div>
+
+        <!-- 10 -->
+        <div class="policy-section" id="pol-10">
+          <h2><span class="sec-num">10</span> International data transfers</h2>
+          <p>GENM Software may use service providers or infrastructure located outside your country of residence. Where personal data is transferred internationally, we ensure adequate safeguards are in place — such as standard contractual clauses or equivalent mechanisms — in accordance with applicable data protection law.</p>
+        </div>
+
+        <!-- 11 -->
+        <div class="policy-section" id="pol-11">
+          <h2><span class="sec-num">11</span> Policy updates</h2>
+          <p>We may update this Policy from time to time to reflect changes in our practices, technology, or applicable law. When we make material changes, we will notify users via the Platform or by email. Continued use of the Platform after the effective date of any update constitutes acceptance of the revised Policy.</p>
+        </div>
+
+        <!-- 12 -->
+        <div class="policy-section" id="pol-12">
+          <h2><span class="sec-num">12</span> How to contact us</h2>
+          <div class="policy-contact-box">
+            <p>If you have any questions, concerns, or requests related to this Privacy Policy or your personal data, please contact us:</p>
+            <br />
+            <p><strong>GENM Software</strong><br />
+            Website: <a href="https://genmsoftware.com">genmsoftware.com</a><br />
+            Email: <a href="mailto:info@genmsoftware.com">info@genmsoftware.com</a></p>
+          </div>
+        </div>
+
+        <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+          <span style="font-size:0.82rem;color:var(--muted);">© 2025 GENM Software. All rights reserved.</span>
+          <button class="btn-ghost" style="font-size:0.82rem;padding:10px 20px;" onclick="showPage('landing')">← Back to Home</button>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /policy -->
+
+
+  <script>
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Smooth scroll for anchor links within the landing page
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
